@@ -1,55 +1,143 @@
+using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(MeshFilter), typeof(MeshRenderer))]
 public class TerrainGenerator : MonoBehaviour {
     public int width = 8;
     public int height = 8;
     public int depth = 8;
     public float noiseScale = 0.1f;
-    public float noiseAmplitude = 1f;
     public Vector3 offset;
 
-    public GameObject pointPrefab;
+    public float threshold = 0.5f;
+
     public float dotSize = 0.25f;
-    private GameObject[,,] points;
+    public bool drawDots = false;
+
+    private float[,,] noiseMap;
+
+    private readonly List<Vector3> vertices = new();
+    private readonly List<int> triangles = new();
+
+    private MeshFilter meshFilter;
 
     private void Start() {
-        RenderPoints();
+        meshFilter = GetComponent<MeshFilter>();
     }
 
     private void Update() {
-        RenderPoints();
+        GenerateNoiseMap();
+        MarchingCubes();
+        GenerateMesh();
     }
 
-    void RenderPoints() {
-        foreach (Transform child in transform) {
-            Destroy(child.gameObject);
+    private void OnDrawGizmosSelected() {
+        if (!drawDots || !Application.isPlaying) {
+            return;
         }
-
-        GenerateNoise();
-    }
-
-    void GenerateNoise() {
-        points = new GameObject[width, height, depth];
 
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
                 for (int z = 0; z < depth; z++) {
-                    float xCoord = (x + offset.x) * noiseScale;
-                    float yCoord = (y + offset.y) * noiseScale;
-                    float zCoord = (z + offset.z) * noiseScale;
-
-                    float sample = Mathf.PerlinNoise(xCoord, yCoord);
-                    float value = sample * noiseAmplitude;
-
-                    Vector3 position = new Vector3(x, y, z);
-
-                    points[x, y, z] = Instantiate(pointPrefab, position, Quaternion.identity, transform);
-                    points[x, y, z].transform.localScale = Vector3.one * dotSize;
-
-                    Renderer renderer = points[x, y, z].GetComponent<Renderer>();
-                    renderer.material.color = new Color(value, value, value);
+                    float value = noiseMap[x, y, z];
+                    Vector3 position = new(x, y, z);
+                    Gizmos.color = new Color(value, value, value);
+                    Gizmos.DrawSphere(position, dotSize);
                 }
             }
         }
+    }
+
+    private void GenerateMesh() {
+        Mesh mesh = new() {
+            vertices = vertices.ToArray(),
+            triangles = triangles.ToArray()
+        };
+
+        mesh.RecalculateNormals();
+        mesh.RecalculateBounds();
+        mesh.Optimize();
+
+        meshFilter.mesh = mesh;
+    }
+
+    private void MarchingCubes() {
+        vertices.Clear();
+        triangles.Clear();
+
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+                for (int z = 0; z < depth; z++) {
+                    int configIndex = 0;
+
+                    for (int i = 0; i < 8; i++) {
+                        Vector3Int corner = new Vector3Int(x, y, z) + MarchingCubesTables.Corners[i];
+                        if (noiseMap[corner.x, corner.y, corner.z] > threshold) {
+                            configIndex |= 1 << i;
+                        }
+                    }
+
+                    MarchCube(new Vector3(x, y, z), configIndex);
+                }
+            }
+        }
+    }
+
+    private void MarchCube(Vector3 position, int configIndex) {
+        if (configIndex == 0 || configIndex == 255) return;
+
+        for (int t = 0; t < 5; t++) {
+            for (int v = 0; v < 3; v++) {
+                int triangleValue = MarchingCubesTables.Triangles[configIndex, t * 3 + v];
+                if (triangleValue == -1) return;
+
+                Vector3 edgeStart = MarchingCubesTables.Edges[triangleValue, 0];
+                Vector3 edgeEnd = MarchingCubesTables.Edges[triangleValue, 1];
+
+                // TODO: Interpolate the vertex position
+                Vector3 vertex = (edgeStart + edgeEnd) / 2;
+
+                vertices.Add(position + vertex);
+                triangles.Add(vertices.Count - 1);
+            }
+        }
+    }
+
+    private void GenerateNoiseMap() {
+        noiseMap = new float[width + 1, height + 1, depth + 1];
+
+        for (int x = 0; x < width + 1; x++) {
+            for (int y = 0; y < height + 1; y++) {
+                for (int z = 0; z < depth + 1; z++) {
+                    noiseMap[x, y, z] = PerlinNoise3D(x * noiseScale + offset.x, y * noiseScale + offset.y, z * noiseScale + offset.z);
+
+                    // float currentHeight = height * Mathf.PerlinNoise(x * noiseScale, z * noiseScale);
+                    // float distToSufrace;
+
+                    // if (y <= currentHeight - 0.5f)
+                    //     distToSufrace = 0f;
+                    // else if (y > currentHeight + 0.5f)
+                    //     distToSufrace = 1f;
+                    // else if (y > currentHeight)
+                    //     distToSufrace = y - currentHeight;
+                    // else
+                    //     distToSufrace = currentHeight - y;
+
+                    // noiseMap[x, y, z] = distToSufrace;
+                }
+            }
+        }
+    }
+
+    private float PerlinNoise3D(float x, float y, float z) {
+        float xy = Mathf.PerlinNoise(x, y);
+        float xz = Mathf.PerlinNoise(x, z);
+        float yz = Mathf.PerlinNoise(y, z);
+
+        float yx = Mathf.PerlinNoise(y, x);
+        float zx = Mathf.PerlinNoise(z, x);
+        float zy = Mathf.PerlinNoise(z, y);
+
+        return (xy + xz + yz + yx + zx + zy) / 6;
     }
 }
