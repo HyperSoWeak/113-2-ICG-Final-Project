@@ -5,10 +5,18 @@ using UnityEditor;
 #if UNITY_EDITOR
 [CustomEditor(typeof(TerrainGenerator))]
 public class TerrainGeneratorInspector : Editor {
+    bool autoUpdate = true;
+
     public override void OnInspectorGUI() {
-        base.OnInspectorGUI();
+        autoUpdate = EditorGUILayout.Toggle("Auto Update", autoUpdate);
 
         TerrainGenerator terrainGenerator = (TerrainGenerator)target;
+        if (DrawDefaultInspector()) {
+            if (autoUpdate) {
+                terrainGenerator.Generate();
+            }
+        }
+
         if (GUILayout.Button("Generate")) {
             terrainGenerator.Generate();
         }
