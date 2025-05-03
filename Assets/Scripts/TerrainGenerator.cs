@@ -1,5 +1,20 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor;
+
+#if UNITY_EDITOR
+[CustomEditor(typeof(TerrainGenerator))]
+public class TerrainGeneratorInspector : Editor {
+    public override void OnInspectorGUI() {
+        base.OnInspectorGUI();
+
+        TerrainGenerator terrainGenerator = (TerrainGenerator)target;
+        if (GUILayout.Button("Generate")) {
+            terrainGenerator.Generate();
+        }
+    }
+}
+#endif
 
 [RequireComponent(typeof(MeshFilter), typeof(MeshRenderer))]
 public class TerrainGenerator : MonoBehaviour {
@@ -20,6 +35,13 @@ public class TerrainGenerator : MonoBehaviour {
     private readonly List<int> triangles = new();
 
     private MeshFilter meshFilter;
+    
+    public void Generate() {
+        if (meshFilter == null) meshFilter = GetComponent<MeshFilter>();
+        GenerateNoiseMap();
+        MarchingCubes();
+        GenerateMesh();
+    }
 
     private void Start() {
         meshFilter = GetComponent<MeshFilter>();
