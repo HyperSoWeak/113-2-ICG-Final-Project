@@ -107,13 +107,13 @@ public class TerrainGenerator : MonoBehaviour {
                         }
                     }
 
-                    MarchCube(new Vector3(x, y, z), configIndex);
+                    MarchCube(new Vector3Int(x, y, z), configIndex);
                 }
             }
         }
     }
 
-    private void MarchCube(Vector3 position, int configIndex) {
+    private void MarchCube(Vector3Int position, int configIndex) {
         if (configIndex == 0 || configIndex == 255) return;
 
         for (int t = 0; t < 5; t++) {
@@ -121,13 +121,16 @@ public class TerrainGenerator : MonoBehaviour {
                 int triangleValue = MarchingCubesTables.Triangles[configIndex, t * 3 + v];
                 if (triangleValue == -1) return;
 
-                Vector3 edgeStart = MarchingCubesTables.Edges[triangleValue, 0];
-                Vector3 edgeEnd = MarchingCubesTables.Edges[triangleValue, 1];
+                Vector3Int edgeStart = MarchingCubesTables.Edges[triangleValue, 0] + position;
+                Vector3Int edgeEnd = MarchingCubesTables.Edges[triangleValue, 1] + position;
 
-                // TODO: Interpolate the vertex position
-                Vector3 vertex = (edgeStart + edgeEnd) / 2;
+                float StartValue = noiseMap[edgeStart.x, edgeStart.y, edgeStart.z] - threshold;
+                float EndValue = noiseMap[edgeEnd.x, edgeEnd.y, edgeEnd.z] - threshold;
+                float ratio = StartValue / (StartValue - EndValue);
+                // Debug.Log(ratio);
+                Vector3 vertex = Vector3.Lerp(edgeStart, edgeEnd, ratio);
 
-                vertices.Add(position + vertex);
+                vertices.Add(vertex);
                 triangles.Add(vertices.Count - 1);
             }
         }
@@ -140,7 +143,7 @@ public class TerrainGenerator : MonoBehaviour {
             for (int y = 0; y < height + 1; y++) {
                 for (int z = 0; z < depth + 1; z++) {
                     // noiseMap[x, y, z] = PerlinNoise3D(x * noiseScale + offset.x, y * noiseScale + offset.y, z * noiseScale + offset.z);
-                    noiseMap[x, y, z] = Noises.PlaneNoise(new Vector3(x, y, z), offset, 1/noiseScale, 2);
+                    noiseMap[x, y, z] = Noises.GeneratePlaneTerrainValue(new Vector3(x, y, z), offset, 1/noiseScale, 2);
 
                     // float currentHeight = height * Mathf.PerlinNoise(x * noiseScale, z * noiseScale);
                     // float distToSufrace;

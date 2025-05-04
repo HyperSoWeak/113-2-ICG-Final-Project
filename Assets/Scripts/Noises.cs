@@ -6,12 +6,12 @@ public static class Noises {
     /// <summary>
     /// Noise function for plane terrain generation.
     /// </summary>
-    public static float PlaneNoise(Vector3 position, Vector3 offset, float scale = 1f, float horizon = 0f) {
+    public static float GeneratePlaneTerrainValue(Vector3 position, Vector3 offset, float scale = 1f, float horizon = 0f) {
         float horizonValue = (position.y - horizon) / scale;
         position += offset;
         position /= scale;
-        float NoiseValue = horizonValue + OctavePerlinNoise(new Vector2(position.x, position.z), Vector3.zero);
-        return NoiseValue;
+        float value = horizonValue + OctavePerlinNoise(new Vector2(position.x, position.z), Vector3.zero);
+        return value;
     }
     
     /// <remarks>
