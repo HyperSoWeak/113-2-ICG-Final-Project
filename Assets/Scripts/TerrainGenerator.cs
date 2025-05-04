@@ -139,7 +139,8 @@ public class TerrainGenerator : MonoBehaviour {
         for (int x = 0; x < width + 1; x++) {
             for (int y = 0; y < height + 1; y++) {
                 for (int z = 0; z < depth + 1; z++) {
-                    noiseMap[x, y, z] = PerlinNoise3D(x * noiseScale + offset.x, y * noiseScale + offset.y, z * noiseScale + offset.z);
+                    // noiseMap[x, y, z] = PerlinNoise3D(x * noiseScale + offset.x, y * noiseScale + offset.y, z * noiseScale + offset.z);
+                    noiseMap[x, y, z] = Noises.PlaneNoise(new Vector3(x, y, z), offset, 1/noiseScale, 2);
 
                     // float currentHeight = height * Mathf.PerlinNoise(x * noiseScale, z * noiseScale);
                     // float distToSufrace;
@@ -157,17 +158,5 @@ public class TerrainGenerator : MonoBehaviour {
                 }
             }
         }
-    }
-
-    private float PerlinNoise3D(float x, float y, float z) {
-        float xy = Mathf.PerlinNoise(x, y);
-        float xz = Mathf.PerlinNoise(x, z);
-        float yz = Mathf.PerlinNoise(y, z);
-
-        float yx = Mathf.PerlinNoise(y, x);
-        float zx = Mathf.PerlinNoise(z, x);
-        float zy = Mathf.PerlinNoise(z, y);
-
-        return (xy + xz + yz + yx + zx + zy) / 6;
     }
 }
