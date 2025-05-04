@@ -1,4 +1,5 @@
 using NUnit.Framework;
+using System;
 using UnityEngine;
 
 public static class Noises {
@@ -22,7 +23,19 @@ public static class Noises {
         float frequency = 1f;
         position += offset;
         position /= scale;
-        float maxNoiseValue = (1 - Mathf.Pow(persistence, octaves)) / (1 - persistence);
+        Func<float, int, float> QuickPow = (float a, int x) => {
+            int i = octaves;
+            float res = 1f;
+            while (i > 0) {
+                if ((i & 1) == 1) {
+                    res *= a;
+                }
+                i >>= 1;
+                a *= a;
+            }
+            return res;
+        };
+        float maxNoiseValue = (1 - QuickPow(persistence, octaves)) / (1 - persistence);
         float minNoiseValue = 0f;
         
         for (int i = 0; i < octaves; i++) {
