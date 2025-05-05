@@ -10,7 +10,10 @@ public static class Noises {
         float horizonValue = (position.y - horizon) / scale;
         position += offset;
         position /= scale;
-        float value = horizonValue + OctavePerlinNoise(new Vector2(position.x, position.z), Vector3.zero);
+        // float value = horizonValue + OctavePerlinNoise(new Vector2(position.x, position.z), Vector3.zero);
+        float value = horizonValue + Noise3D(position.x, position.y, position.z, (float x, float y) => {
+            return OctavePerlinNoise(new Vector2(x, y), Vector3.zero);
+        });
         return value;
     }
     
@@ -50,16 +53,20 @@ public static class Noises {
         
         return noiseValue;
     }
+    
+    public static float Noise3D(float x, float y, float z, Func<float, float, float> noiseFunc2D) {
+        float xy = noiseFunc2D(x, y);
+        float xz = noiseFunc2D(x, z);
+        float yz = noiseFunc2D(y, z);
 
-    public static float PerlinNoise3D(float x, float y, float z) {
-        float xy = Mathf.PerlinNoise(x, y);
-        float xz = Mathf.PerlinNoise(x, z);
-        float yz = Mathf.PerlinNoise(y, z);
-
-        float yx = Mathf.PerlinNoise(y, x);
-        float zx = Mathf.PerlinNoise(z, x);
-        float zy = Mathf.PerlinNoise(z, y);
+        float yx = noiseFunc2D(y, x);
+        float zx = noiseFunc2D(z, x);
+        float zy = noiseFunc2D(z, y);
 
         return (xy + xz + yz + yx + zx + zy) / 6;
+    }
+
+    public static float PerlinNoise3D(float x, float y, float z) {
+        return Noise3D(x, y, z, Mathf.PerlinNoise);
     }
 }
