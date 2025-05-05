@@ -53,12 +53,15 @@ public class TerrainGenerator : MonoBehaviour {
 
     private void Start() {
         meshFilter = GetComponent<MeshFilter>();
-    }
-
-    private void Update() {
         GenerateNoiseMap();
         MarchingCubes();
         GenerateMesh();
+    }
+
+    private void Update() {
+        // GenerateNoiseMap();
+        // MarchingCubes();
+        // GenerateMesh();
     }
 
     private void OnDrawGizmosSelected() {
