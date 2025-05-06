@@ -408,7 +408,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   viewer: {fileID: 330585546}
-  maxViewDistance: 60
+  maxViewDistance: 40
   chunkSize: {x: 40, y: 10, z: 40}
 --- !u!4 &692767622
 Transform:

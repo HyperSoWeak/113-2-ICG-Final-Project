@@ -8,6 +8,7 @@ public class EndlessTerrain : MonoBehaviour {
     [SerializeField] Vector3 chunkSize;
     Dictionary<Vector3Int, TerrainChunk> chunks = new();
     HashSet<TerrainChunk> activeChunks = new();
+    TerrainGenerator terrainGenerator;
 
     Vector3Int ToTerrainCoord(Vector3 position) {
         return new Vector3Int(
@@ -15,6 +16,10 @@ public class EndlessTerrain : MonoBehaviour {
             Mathf.FloorToInt(position.y / chunkSize.y),
             Mathf.FloorToInt(position.z / chunkSize.z)
         );
+    }
+
+    void Awake() {
+        terrainGenerator = GetComponent<TerrainGenerator>();
     }
 
     void Update() {
@@ -48,7 +53,7 @@ public class EndlessTerrain : MonoBehaviour {
                         currentChunkCoord.z + z
                     );
                     if (!chunks.ContainsKey(chunkCoord)) {
-                        chunks[chunkCoord] = new TerrainChunk(chunkCoord, chunkSize, transform);
+                        chunks[chunkCoord] = new TerrainChunk(chunkCoord, terrainGenerator, transform);
                     }
                     chunks[chunkCoord].SetActive(true);
                     activeChunks.Add(chunks[chunkCoord]);
@@ -61,17 +66,8 @@ public class EndlessTerrain : MonoBehaviour {
         GameObject meshObject;
         public Vector3 coord {get; private set; }
 
-        public TerrainChunk(Vector3Int coord, Vector3 chunkSize, Transform parent = null) {
-            meshObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
-            this.coord = coord;
-            meshObject.name = $"Chunk {coord.x} {coord.y} {coord.z}";
-            meshObject.transform.localScale = chunkSize;
-            meshObject.transform.position = new Vector3(
-                coord.x * chunkSize.x,
-                coord.y * chunkSize.y,
-                coord.z * chunkSize.z
-            );
-            meshObject.transform.SetParent(parent);
+        public TerrainChunk(Vector3Int coord, TerrainGenerator generator, Transform parent = null) {
+            meshObject = generator.GenerateTerrain(coord, parent);
         }
         
         public void SetActive(bool isActive) {
