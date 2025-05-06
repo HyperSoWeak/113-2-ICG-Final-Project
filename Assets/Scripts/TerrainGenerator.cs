@@ -5,19 +5,12 @@ using UnityEditor;
 #if UNITY_EDITOR
 [CustomEditor(typeof(TerrainGenerator))]
 public class TerrainGeneratorInspector : Editor {
-    bool autoUpdate = true;
     Vector3Int testCoord = new Vector3Int(0, 0, 0);
 
     public override void OnInspectorGUI() {
-        autoUpdate = EditorGUILayout.Toggle("Auto Update", autoUpdate);
 
         TerrainGenerator terrainGenerator = (TerrainGenerator)target;
-        if (DrawDefaultInspector()) {
-            if (autoUpdate) {
-                TestGenerateTerrain(terrainGenerator);
-            }
-        }
-        
+        DrawDefaultInspector();
         testCoord = EditorGUILayout.Vector3IntField("Test Coord", testCoord);
         
         if (GUILayout.Button("Test")) {
