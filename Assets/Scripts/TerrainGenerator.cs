@@ -6,6 +6,7 @@ using UnityEditor;
 [CustomEditor(typeof(TerrainGenerator))]
 public class TerrainGeneratorInspector : Editor {
     bool autoUpdate = true;
+    Vector3Int testCoord = new Vector3Int(0, 0, 0);
 
     public override void OnInspectorGUI() {
         autoUpdate = EditorGUILayout.Toggle("Auto Update", autoUpdate);
@@ -13,18 +14,23 @@ public class TerrainGeneratorInspector : Editor {
         TerrainGenerator terrainGenerator = (TerrainGenerator)target;
         if (DrawDefaultInspector()) {
             if (autoUpdate) {
-                terrainGenerator.Generate();
+                TestGenerateTerrain(terrainGenerator);
             }
         }
-
-        if (GUILayout.Button("Generate")) {
-            terrainGenerator.Generate();
+        
+        testCoord = EditorGUILayout.Vector3IntField("Test Coord", testCoord);
+        
+        if (GUILayout.Button("Test")) {
+            TestGenerateTerrain(terrainGenerator);
         }
+    }
+    
+    void TestGenerateTerrain(TerrainGenerator generator) {
+        generator.GenerateTerrain(testCoord, generator.transform);
     }
 }
 #endif
 
-[RequireComponent(typeof(MeshFilter), typeof(MeshRenderer))]
 public class TerrainGenerator : MonoBehaviour {
     public int width = 8;
     public int height = 8;
@@ -33,90 +39,67 @@ public class TerrainGenerator : MonoBehaviour {
     public Vector3 offset;
 
     public float threshold = 0.5f;
-
-    public float dotSize = 0.25f;
-    public bool drawDots = false;
-
-    private float[,,] noiseMap;
-
-    private readonly List<Vector3> vertices = new();
-    private readonly List<int> triangles = new();
-
-    private MeshFilter meshFilter;
+    [SerializeField] Material material;
     
-    public void Generate() {
-        if (meshFilter == null) meshFilter = GetComponent<MeshFilter>();
-        GenerateNoiseMap();
-        MarchingCubes();
-        GenerateMesh();
+    public GameObject GenerateTerrain(Vector3Int coord, Transform parent = null) {
+        GameObject meshObject = new GameObject($"Terrain {coord.x}_{coord.y}_{coord.z}");
+        MeshFilter meshFilter = meshObject.AddComponent<MeshFilter>();
+        MeshRenderer meshRenderer = meshObject.AddComponent<MeshRenderer>();
+        meshRenderer.material = material;
+        var noiseMap = GenerateNoiseMap(coord);
+        Mesh mesh = GenerateMesh(noiseMap);
+        meshFilter.mesh = mesh;
+        meshObject.transform.position = new Vector3(coord.x * width, coord.y * height, coord.z * depth);
+        meshObject.transform.parent = parent;
+        return meshObject;
     }
+    
+    float[,,] GenerateNoiseMap(Vector3Int coord) {
+        float[,,] noiseMap = new float[width + 1, height + 1, depth + 1];
+        Vector3 position = new Vector3(
+            coord.x * width,
+            coord.y * height,
+            coord.z * depth
+        );
 
-    private void Start() {
-        meshFilter = GetComponent<MeshFilter>();
-        GenerateNoiseMap();
-        MarchingCubes();
-        GenerateMesh();
-    }
-
-    private void Update() {
-        // GenerateNoiseMap();
-        // MarchingCubes();
-        // GenerateMesh();
-    }
-
-    private void OnDrawGizmosSelected() {
-        if (!drawDots || !Application.isPlaying) {
-            return;
-        }
-
-        for (int x = 0; x < width; x++) {
-            for (int y = 0; y < height; y++) {
-                for (int z = 0; z < depth; z++) {
-                    float value = noiseMap[x, y, z];
-                    Vector3 position = new(x, y, z);
-                    Gizmos.color = new Color(value, value, value);
-                    Gizmos.DrawSphere(position, dotSize);
+        for (int x = 0; x < width + 1; x++) {
+            for (int y = 0; y < height + 1; y++) {
+                for (int z = 0; z < depth + 1; z++) {
+                    noiseMap[x, y, z] = Noises.GeneratePlaneTerrainValue(position + new Vector3(x, y, z), offset, 1/noiseScale, 2);
                 }
             }
         }
+        return noiseMap;
     }
-
-    private void GenerateMesh() {
-        Mesh mesh = new() {
-            vertices = vertices.ToArray(),
-            triangles = triangles.ToArray()
-        };
-
-        mesh.RecalculateNormals();
-        mesh.RecalculateBounds();
-        mesh.Optimize();
-
-        meshFilter.mesh = mesh;
-    }
-
-    private void MarchingCubes() {
-        vertices.Clear();
-        triangles.Clear();
-
+    
+    Mesh GenerateMesh(float[,,] noiseMap) {
+        List<Vector3> vertices = new List<Vector3>();
+        List<int> triangles = new List<int>();
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
                 for (int z = 0; z < depth; z++) {
                     int configIndex = 0;
-
                     for (int i = 0; i < 8; i++) {
                         Vector3Int corner = new Vector3Int(x, y, z) + MarchingCubesTables.Corners[i];
                         if (noiseMap[corner.x, corner.y, corner.z] > threshold) {
                             configIndex |= 1 << i;
                         }
                     }
-
-                    MarchCube(new Vector3Int(x, y, z), configIndex);
+                    ProcessMarchingCube(new Vector3Int(x, y, z), configIndex, noiseMap, vertices, triangles);
                 }
             }
         }
+        Mesh mesh = new() {
+            vertices = vertices.ToArray(),
+            triangles = triangles.ToArray()
+        };
+        mesh.RecalculateNormals();
+        mesh.RecalculateBounds();
+        mesh.Optimize();
+        return mesh;
     }
 
-    private void MarchCube(Vector3Int position, int configIndex) {
+    private void ProcessMarchingCube(Vector3Int position, int configIndex, float[,,] noiseMap, List<Vector3> vertices, List<int> triangles) {
         if (configIndex == 0 || configIndex == 255) return;
 
         for (int t = 0; t < 5; t++) {
@@ -135,33 +118,6 @@ public class TerrainGenerator : MonoBehaviour {
 
                 vertices.Add(vertex);
                 triangles.Add(vertices.Count - 1);
-            }
-        }
-    }
-
-    private void GenerateNoiseMap() {
-        noiseMap = new float[width + 1, height + 1, depth + 1];
-
-        for (int x = 0; x < width + 1; x++) {
-            for (int y = 0; y < height + 1; y++) {
-                for (int z = 0; z < depth + 1; z++) {
-                    // noiseMap[x, y, z] = PerlinNoise3D(x * noiseScale + offset.x, y * noiseScale + offset.y, z * noiseScale + offset.z);
-                    noiseMap[x, y, z] = Noises.GeneratePlaneTerrainValue(new Vector3(x, y, z), offset, 1/noiseScale, 2);
-
-                    // float currentHeight = height * Mathf.PerlinNoise(x * noiseScale, z * noiseScale);
-                    // float distToSufrace;
-
-                    // if (y <= currentHeight - 0.5f)
-                    //     distToSufrace = 0f;
-                    // else if (y > currentHeight + 0.5f)
-                    //     distToSufrace = 1f;
-                    // else if (y > currentHeight)
-                    //     distToSufrace = y - currentHeight;
-                    // else
-                    //     distToSufrace = currentHeight - y;
-
-                    // noiseMap[x, y, z] = distToSufrace;
-                }
             }
         }
     }
