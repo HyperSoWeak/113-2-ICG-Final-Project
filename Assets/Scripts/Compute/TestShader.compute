@@ -1,7 +1,7 @@
 // Each #kernel tells which function to compile; you can have many kernels
 #pragma kernel CSMain
 #include "Packages/jp.keijiro.noiseshader/Shader/ClassicNoise3D.hlsl"
-
+#include "./Noises.compute"
 
 // Create a RenderTexture with enableRandomWrite flag and set it
 // with cs.SetTexture
@@ -11,6 +11,5 @@ int3 Offset;
 
 [numthreads(8,8,8)]
 void CSMain (uint3 id : SV_DispatchThreadID) {
-    // Result[id.xy] = ClassicNoise(id.xy / 64.0f + float2(20.0f, 20.0f));
-    Result[id] = ClassicNoise(id / 8.0f + float3(20.0f, 20.0f, 20.0f));
+    Result[id] = OctavePerlinNoise(id / 8.0f, 4, 0.5, 2.0, float3(20.0f, 20.0f, 20.0f));
 }
