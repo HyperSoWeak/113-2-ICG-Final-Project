@@ -10,6 +10,6 @@ int3 Offset;
 
 [numthreads(8,8,8)]
 void SampleNoise (uint3 id : SV_DispatchThreadID) {
-    Result[id] = ClassicNoise(id / 8.0f);
-    // Result[id] = OctavePerlinNoise(id / 8.0f, 4, 0.5, 2.0, Offset);
+    // Result[id] = ClassicNoise(id / 8.0f);
+    Result[id] = OctavePerlinNoise(id / 8.0f, 4, 0.5, 2.0, Offset);
 }

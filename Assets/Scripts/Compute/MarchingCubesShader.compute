@@ -1,6 +1,6 @@
 // Each #kernel tells which function to compile; you can have many kernels
 #pragma kernel ProcessMarchingCube
-#include "/MarchTables.compute"
+#include "MarchTables.compute"
 
 struct Triangle {
     float3 v0;
@@ -12,55 +12,59 @@ float Threshold;
 RWTexture3D<float> NoiseMap;
 AppendStructuredBuffer<Triangle> VertexBuffer;
 
-static const int3 corners[8] = {
-    int3(0, 0, 0),
-    int3(1, 0, 0),
-    int3(1, 0, 1),
-    int3(0, 0, 1),
-    int3(0, 1, 0),
-    int3(1, 1, 0),
-    int3(1, 1, 1),
-    int3(0, 1, 1)
+static const uint3 corners[8] = {
+    uint3(0, 0, 0),
+    uint3(1, 0, 0),
+    uint3(1, 0, 1),
+    uint3(0, 0, 1),
+    uint3(0, 1, 0),
+    uint3(1, 1, 0),
+    uint3(1, 1, 1),
+    uint3(0, 1, 1)
 };
 
-static const int2 edges[12] = {
-    int2(0, 1),
-    int2(1, 2),
-    int2(2, 3),
-    int2(3, 0),
-    int2(4, 5),
-    int2(5, 6),
-    int2(6, 7),
-    int2(7, 4),
-    int2(0, 4),
-    int2(1, 5),
-    int2(2, 6),
-    int2(3, 7)
+static const int edges[12][2] = {
+    {0, 1},
+    {1, 2},
+    {2, 3},
+    {3, 0},
+    {4, 5},
+    {5, 6},
+    {6, 7},
+    {7, 4},
+    {0, 4},
+    {1, 5},
+    {2, 6},
+    {3, 7}
 };
 
 [numthreads(8,8,8)]
 void ProcessMarchingCube (uint3 id : SV_DispatchThreadID) {
-    int cubeIndex = 0;
+    uint cubeIndex = 0;
     [unroll]
     for (int i = 0; i < 8; i++) {
         int3 corner = corners[i] + id;
-        float value = NoiseMap[id+corner];
-        if (value > Threshold) {
-            cubeIndex |= 1 << i;
+        // float value = NoiseMap[id+corner];
+        uint3 position = id + corner;
+        float value = ((position.x-7.5f)*(position.x-7.5f) + (position.y-7.5f)*(position.y-7.5f) + (position.z-7.5f)*(position.z-7.5f) - 7.5f*7.5f);
+        if (value < 0) {
+            cubeIndex |= (1 << i);
         }
     }
 
     int edgeIndices[16] = triangulation[cubeIndex];
 
-    for (int t = 0; t < 5; t += 3) {
+    for (int t = 0; t < 5; t++) {
         if (edgeIndices[t*3] == -1) break;
         float3 vertices[3];
         for (int v = 0; v < 3; v++) {
             int edgeIndex = edgeIndices[t*3 + v];
-            int2 edgeCorners = edges[edgeIndex];
-            int3 edgeStart = corners[edgeCorners.x] + id;
-            int3 edgeEnd = corners[edgeCorners.y] + id;
-            float3 vertex = lerp(edgeStart, edgeEnd, 0.5);
+            int edgeCorners[2] = edges[edgeIndex];
+            // int2 edgeCorners = edges[(1 + v*2) % 5];
+            uint3 edgeStart = corners[edgeCorners[0]] + id;
+            uint3 edgeEnd = corners[edgeCorners[1]] + id;
+            // float3 vertex = lerp(edgeStart, edgeEnd, 0.5f);
+            float3 vertex = edgeStart * 0.5f + edgeEnd * 0.5f;
             vertices[v] = vertex;
         }
         Triangle tri;
