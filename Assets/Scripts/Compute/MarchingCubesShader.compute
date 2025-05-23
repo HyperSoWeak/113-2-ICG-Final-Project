@@ -43,10 +43,8 @@ void ProcessMarchingCube (uint3 id : SV_DispatchThreadID) {
     uint cubeIndex = 0;
     [unroll]
     for (int i = 0; i < 8; i++) {
-        int3 corner = corners[i] + id;
-        // float value = NoiseMap[id+corner];
-        uint3 position = id + corner;
-        float value = ((position.x-7.5f)*(position.x-7.5f) + (position.y-7.5f)*(position.y-7.5f) + (position.z-7.5f)*(position.z-7.5f) - 7.5f*7.5f);
+        int3 position = corners[i] + id;
+        float value = NoiseMap[position];
         if (value < 0) {
             cubeIndex |= (1 << i);
         }
