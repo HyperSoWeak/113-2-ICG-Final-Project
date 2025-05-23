@@ -45,7 +45,7 @@ void ProcessMarchingCube (uint3 id : SV_DispatchThreadID) {
     for (int i = 0; i < 8; i++) {
         int3 position = corners[i] + id;
         float value = NoiseMap[position];
-        if (value < 0) {
+        if (value < Threshold) {
             cubeIndex |= (1 << i);
         }
     }
@@ -58,11 +58,13 @@ void ProcessMarchingCube (uint3 id : SV_DispatchThreadID) {
         for (int v = 0; v < 3; v++) {
             int edgeIndex = edgeIndices[t*3 + v];
             int edgeCorners[2] = edges[edgeIndex];
-            // int2 edgeCorners = edges[(1 + v*2) % 5];
             uint3 edgeStart = corners[edgeCorners[0]] + id;
             uint3 edgeEnd = corners[edgeCorners[1]] + id;
             // float3 vertex = lerp(edgeStart, edgeEnd, 0.5f);
-            float3 vertex = edgeStart * 0.5f + edgeEnd * 0.5f;
+            float valueStart = NoiseMap[edgeStart] - Threshold;
+            float valueEnd = NoiseMap[edgeEnd] - Threshold;
+            float ratio = valueStart / (valueStart - valueEnd);
+            float3 vertex = lerp(edgeStart, edgeEnd, ratio);
             vertices[v] = vertex;
         }
         Triangle tri;
