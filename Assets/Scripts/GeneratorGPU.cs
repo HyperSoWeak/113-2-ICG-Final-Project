@@ -6,16 +6,16 @@ using UnityEngine.Rendering;
 #if UNITY_EDITOR
 [CustomEditor(typeof(GeneratorGPU))]
 public class GeneratorGPUInspector : Editor {
-    // bool autoUpdate = true;
+    bool autoUpdate = true;
 
     public override void OnInspectorGUI() {
-        // autoUpdate = EditorGUILayout.Toggle("Auto Update", autoUpdate);
+        autoUpdate = EditorGUILayout.Toggle("Auto Update", autoUpdate);
 
         GeneratorGPU terrainGenerator = (GeneratorGPU)target;
         if (DrawDefaultInspector()) {
-            // if (autoUpdate) {
-            //     terrainGenerator.Generate();
-            // }
+            if (autoUpdate) {
+                terrainGenerator.Test();
+            }
         }
 
         if (GUILayout.Button("Test")) {

@@ -5,7 +5,7 @@ using UnityEngine;
 public class EndlessTerrain : MonoBehaviour {
     [SerializeField] Transform viewer;
     [SerializeField] float maxViewDistance;
-    [SerializeField] Vector3 chunkSize;
+    Vector3 chunkSize;
     Dictionary<Vector3Int, TerrainChunk> chunks = new();
     HashSet<TerrainChunk> activeChunks = new();
     TerrainGenerator terrainGenerator;
@@ -20,6 +20,7 @@ public class EndlessTerrain : MonoBehaviour {
 
     void Awake() {
         terrainGenerator = GetComponent<TerrainGenerator>();
+        chunkSize = terrainGenerator.chunkSize;
     }
 
     void Update() {
