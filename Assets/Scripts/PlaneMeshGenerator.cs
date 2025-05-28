@@ -24,8 +24,10 @@ public class PlaneMeshGeneratorInspector : Editor {
 #endif
 
 public class PlaneMeshGenerator : MonoBehaviour {
-    [SerializeField] Vector2Int size = new(100, 100);
+    [SerializeField] Vector2Int size = new Vector2Int(100, 100);
+    [SerializeField] Vector2 scale = new Vector2(0.2f, 0.2f);
     [SerializeField] string meshName = "PlaneMesh";
+
     public void GeneratePlaneMesh() {
         Mesh mesh = new Mesh();
         Vector3[] vertices = new Vector3[(size.x + 1) * (size.y + 1)];
@@ -36,7 +38,10 @@ public class PlaneMeshGenerator : MonoBehaviour {
         for (int y = 0; y <= size.y; y++) {
             for (int x = 0; x <= size.x; x++) {
                 int index = y * (size.x + 1) + x;
-                vertices[index] = new Vector3(x - size.x/2.0f, 0, y - size.y/2.0f);
+
+                float posX = (x - size.x / 2f) * scale.x;
+                float posZ = (y - size.y / 2f) * scale.y;
+                vertices[index] = new Vector3(posX, 0, posZ);
                 uv[index] = new Vector2((float)x / size.x, (float)y / size.y);
             }
         }
