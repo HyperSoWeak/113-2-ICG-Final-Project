@@ -2933,6 +2933,21 @@
 
 {
     "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.Vector1MaterialSlot",
+    "m_ObjectId": "1f784dff12564ecca9f1aa7f3ec2cab1",
+    "m_Id": -1649902987,
+    "m_DisplayName": "sacle",
+    "m_SlotType": 0,
+    "m_Hidden": false,
+    "m_ShaderOutputName": "_sacle",
+    "m_StageCapability": 2,
+    "m_Value": 1.0,
+    "m_DefaultValue": 0.0,
+    "m_Labels": []
+}
+
+{
+    "m_SGVersion": 0,
     "m_Type": "UnityEditor.ShaderGraph.DynamicValueMaterialSlot",
     "m_ObjectId": "1fe05ada73e34606908b3c69218e4130",
     "m_Id": 2,
@@ -3126,8 +3141,8 @@
     "m_ObjectId": "211e3fcc6781401ba965c5a9d1d4de0c",
     "m_Title": "Compute Color",
     "m_Position": {
-        "x": 2501.0,
-        "y": 1642.0
+        "x": 2500.000244140625,
+        "y": 1641.7144775390625
     }
 }
 
@@ -5728,6 +5743,9 @@
             "m_Id": "a0525a3a39864946b53ff2e105d53be8"
         },
         {
+            "m_Id": "b771a3a28e1f4c23b8d51bcee56fb248"
+        },
+        {
             "m_Id": "ccbac214f836486687f3d101937470cd"
         }
     ],
@@ -5743,12 +5761,14 @@
     "m_PropertyGuids": [
         "85907adc-1123-42da-9861-1800f039f720",
         "9d09339f-8e39-4bb2-b55b-ff25f856fd1e",
-        "061469db-2845-4d01-a4b0-1549f84632dc"
+        "061469db-2845-4d01-a4b0-1549f84632dc",
+        "95e82a6c-883c-4bed-8679-d7e6a3a17aa5"
     ],
     "m_PropertyIds": [
         -408603753,
         -306597653,
-        -567101502
+        -567101502,
+        -1649902987
     ],
     "m_Dropdowns": [],
     "m_DropdownSelectedEntries": []
@@ -6195,8 +6215,8 @@
     "m_ObjectId": "657a9066b24b4a9785832fa0d1ead7b3",
     "m_Title": "Water Foam",
     "m_Position": {
-        "x": 1213.0,
-        "y": -290.0
+        "x": 1212.000244140625,
+        "y": -290.2857666015625
     }
 }
 
@@ -6749,8 +6769,8 @@
     "m_ObjectId": "750f0aadbd0947cb9d43cd07602bdc6e",
     "m_Title": "Surface Ripple UV Optimization",
     "m_Position": {
-        "x": 3303.0,
-        "y": -1545.0
+        "x": 3302.2861328125,
+        "y": -1545.14306640625
     }
 }
 
@@ -7261,6 +7281,9 @@
             "m_Id": "2d661501d7e04a22b0fcc534587efd5a"
         },
         {
+            "m_Id": "1f784dff12564ecca9f1aa7f3ec2cab1"
+        },
+        {
             "m_Id": "45eff52718d84a5685631ac957f4da8a"
         }
     ],
@@ -7276,12 +7299,14 @@
     "m_PropertyGuids": [
         "85907adc-1123-42da-9861-1800f039f720",
         "9d09339f-8e39-4bb2-b55b-ff25f856fd1e",
-        "061469db-2845-4d01-a4b0-1549f84632dc"
+        "061469db-2845-4d01-a4b0-1549f84632dc",
+        "95e82a6c-883c-4bed-8679-d7e6a3a17aa5"
     ],
     "m_PropertyIds": [
         -408603753,
         -306597653,
-        -567101502
+        -567101502,
+        -1649902987
     ],
     "m_Dropdowns": [],
     "m_DropdownSelectedEntries": []
@@ -7873,6 +7898,9 @@
             "m_Id": "cc5ed1f199db4e7caecc5015efa52edc"
         },
         {
+            "m_Id": "dcb1cffb0e8d46808a0907720673d3d2"
+        },
+        {
             "m_Id": "d2a7903efce1401aba45f1252f902c31"
         }
     ],
@@ -7888,12 +7916,14 @@
     "m_PropertyGuids": [
         "85907adc-1123-42da-9861-1800f039f720",
         "9d09339f-8e39-4bb2-b55b-ff25f856fd1e",
-        "061469db-2845-4d01-a4b0-1549f84632dc"
+        "061469db-2845-4d01-a4b0-1549f84632dc",
+        "95e82a6c-883c-4bed-8679-d7e6a3a17aa5"
     ],
     "m_PropertyIds": [
         -408603753,
         -306597653,
-        -567101502
+        -567101502,
+        -1649902987
     ],
     "m_Dropdowns": [],
     "m_DropdownSelectedEntries": []
@@ -9367,6 +9397,21 @@
 
 {
     "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.Vector1MaterialSlot",
+    "m_ObjectId": "b771a3a28e1f4c23b8d51bcee56fb248",
+    "m_Id": -1649902987,
+    "m_DisplayName": "sacle",
+    "m_SlotType": 0,
+    "m_Hidden": false,
+    "m_ShaderOutputName": "_sacle",
+    "m_StageCapability": 2,
+    "m_Value": 1.0,
+    "m_DefaultValue": 0.0,
+    "m_Labels": []
+}
+
+{
+    "m_SGVersion": 0,
     "m_Type": "UnityEditor.ShaderGraph.DynamicValueMaterialSlot",
     "m_ObjectId": "b80ea5d83ffb43d191a7f8c7b6e9dcda",
     "m_Id": 0,
@@ -9540,8 +9585,8 @@
     "m_ObjectId": "be7650fe4c5b4e1abe0ce377726b89c9",
     "m_Title": "Surface Ripples",
     "m_Position": {
-        "x": 614.0,
-        "y": 328.0
+        "x": 613.1429443359375,
+        "y": 327.4286193847656
     }
 }
 
@@ -9927,8 +9972,8 @@
     "m_ObjectId": "c5d1978d50f841feb7b1ba4399407c04",
     "m_Title": "Gerstner Waves",
     "m_Position": {
-        "x": 1926.0,
-        "y": -1175.0
+        "x": 1925.1429443359375,
+        "y": -1175.4288330078125
     }
 }
 
@@ -10868,6 +10913,21 @@
     "m_TransparentDepthPostpass": false,
     "m_TransparentPerPixelSorting": false,
     "m_SupportLodCrossFade": false
+}
+
+{
+    "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.Vector1MaterialSlot",
+    "m_ObjectId": "dcb1cffb0e8d46808a0907720673d3d2",
+    "m_Id": -1649902987,
+    "m_DisplayName": "sacle",
+    "m_SlotType": 0,
+    "m_Hidden": false,
+    "m_ShaderOutputName": "_sacle",
+    "m_StageCapability": 2,
+    "m_Value": 1.0,
+    "m_DefaultValue": 0.0,
+    "m_Labels": []
 }
 
 {
