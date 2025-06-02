@@ -43,6 +43,16 @@ MonoBehaviour:
   includeSunInBaking:
     m_OverrideState: 0
     m_Value: 0
+  m_SkyVersion: 2
+  m_ObsoleteEarthPreset:
+    m_OverrideState: 0
+    m_Value: 1
+  planetaryRadius:
+    m_OverrideState: 0
+    m_Value: 6378100
+  planetCenterPosition:
+    m_OverrideState: 0
+    m_Value: {x: 0, y: -6378100, z: 0}
   type:
     m_OverrideState: 1
     m_Value: 1
@@ -133,16 +143,6 @@ MonoBehaviour:
   horizonZenithShift:
     m_OverrideState: 0
     m_Value: 0
-  m_SkyVersion: 2
-  m_ObsoleteEarthPreset:
-    m_OverrideState: 0
-    m_Value: 1
-  planetaryRadius:
-    m_OverrideState: 0
-    m_Value: 6378100
-  planetCenterPosition:
-    m_OverrideState: 0
-    m_Value: {x: 0, y: -6378100, z: 0}
 --- !u!114 &-8845446057161508543
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -607,7 +607,7 @@ MonoBehaviour:
     m_Value: 64
   m_VolumetricFogBudget:
     m_OverrideState: 0
-    m_Value: 0.333
+    m_Value: 0.5
   m_ResolutionDepthRatio:
     m_OverrideState: 0
     m_Value: 0.5
@@ -648,9 +648,10 @@ MonoBehaviour:
   m_Name: VisualEnvironment
   m_EditorClassIdentifier: 
   active: 1
+  m_Version: 1
   skyType:
     m_OverrideState: 1
-    m_Value: 4
+    m_Value: 1
   cloudType:
     m_OverrideState: 1
     m_Value: 1
@@ -678,7 +679,6 @@ MonoBehaviour:
   fogType:
     m_OverrideState: 0
     m_Value: 0
-  m_Version: 1
 --- !u!114 &7601432519373796537
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -748,7 +748,7 @@ MonoBehaviour:
     m_Value: 0
   m_RayMaxIterations:
     m_OverrideState: 0
-    m_Value: 70
+    m_Value: 64
   rayMiss:
     m_OverrideState: 0
     m_Value: 3

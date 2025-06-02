@@ -1089,7 +1089,7 @@
     },
     "m_Name": "Combine",
     "m_DrawState": {
-        "m_Expanded": true,
+        "m_Expanded": false,
         "m_Position": {
             "serializedVersion": "2",
             "x": 754.476806640625,
@@ -2946,7 +2946,7 @@
     "m_ObjectId": "8186956dfeb54ac8a01350fe0b7ad849",
     "m_Title": "Sharpness",
     "m_Position": {
-        "x": -552.9999389648438,
+        "x": -553.0001220703125,
         "y": -130.0
     }
 }
@@ -2985,8 +2985,8 @@
     "m_ObjectId": "874fbad662a6422f9d226a1b78134a43",
     "m_Title": "Speed",
     "m_Position": {
-        "x": -1248.0,
-        "y": -401.0
+        "x": -1248.0001220703125,
+        "y": -401.0000915527344
     }
 }
 
@@ -3742,7 +3742,7 @@
     "m_Title": "Normal",
     "m_Position": {
         "x": 120.0,
-        "y": 334.0000915527344
+        "y": 334.0
     }
 }
 

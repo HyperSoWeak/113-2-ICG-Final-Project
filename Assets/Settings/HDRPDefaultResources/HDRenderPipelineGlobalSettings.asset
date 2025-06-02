@@ -156,6 +156,7 @@ MonoBehaviour:
       sssCustomDownsampleSteps: 0
       msaaMode: 1
       materialQuality: 0
+  m_Version: 14
   m_Settings:
     m_SettingsList:
       m_List:
@@ -234,7 +235,6 @@ MonoBehaviour:
     obsoleteHasProbeVolumes:
       m_Keys: []
       m_Values: 
-  m_Version: 14
   references:
     version: 2
     RefIds:
@@ -523,7 +523,7 @@ MonoBehaviour:
         m_Camera:
           bitDatas:
             data1: 72198260625768269
-            data2: 13799031439032811544
+            data2: 13799031440106553368
           lodBias: 1
           lodBiasMode: 0
           lodBiasQualityLevel: 0
