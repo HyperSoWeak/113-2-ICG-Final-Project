@@ -49,6 +49,10 @@ Material:
         m_Texture: {fileID: 2800000, guid: 933bed0224430141cb865033793969f9, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _RippleDisplacement:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _SampleTexture2D_02e346b2d63144528a73768a30a297d9_Texture_1_Texture2D:
         m_Texture: {fileID: 2800000, guid: 7c590264437fb5446bc84173a966ebc1, type: 3}
         m_Scale: {x: 1, y: 1}
@@ -72,6 +76,8 @@ Material:
     - _AlphaDstBlend: 10
     - _AlphaSrcBlend: 1
     - _BlendMode: 0
+    - _BlurStrength: 3
+    - _ChromaticAberrationStrength: 0
     - _ConservativeDepthOffsetEnable: 0
     - _CullMode: 2
     - _CullModeForward: 2
@@ -85,7 +91,7 @@ Material:
     - _EnableBlendModePreserveSpecularLighting: 1
     - _EnableFogOnTransparent: 1
     - _ExcludeFromTUAndAA: 0
-    - _FullColorDepth: 2.75
+    - _FullColorDepth: 4
     - _MaterialID: 1
     - _MaterialTypeMask: 2
     - _OpaqueCullMode: 2
@@ -97,6 +103,7 @@ Material:
     - _RefractionModel: 0
     - _RenderQueueType: 4
     - _RequireSplitLighting: 0
+    - _RippleHeight: 5
     - _SrcBlend: 1
     - _StencilRef: 0
     - _StencilRefDepth: 0
@@ -120,8 +127,8 @@ Material:
     - _TransparentWritingMotionVec: 0
     - _TransparentZWrite: 0
     - _UseShadowThreshold: 0
-    - _WaveHeight: 0.2
-    - _WaveLength: 8
+    - _WaveHeight: 0.1
+    - _WaveLength: 20
     - _ZTestDepthEqualForOpaque: 4
     - _ZTestGBuffer: 4
     - _ZTestTransparent: 4
@@ -131,6 +138,7 @@ Material:
     - _DoubleSidedConstants: {r: 1, g: 1, b: -1, a: 0}
     - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
     - _ShallowColor: {r: 0.118230365, g: 0.37659055, b: 0.41202706, a: 0.4862745}
+    - _SurfaceSize: {r: 100, g: 100, b: 0, a: 0}
     - _WaterColor: {r: 0, g: 0, b: 0, a: 1}
     - _WaveDirection: {r: 1, g: 0, b: 0, a: 0}
   m_BuildTextureStacks: []
