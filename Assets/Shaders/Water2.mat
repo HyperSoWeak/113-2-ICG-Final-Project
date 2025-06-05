@@ -1,5 +1,21 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-1745657126798628657
+MonoBehaviour:
+  m_ObjectHideFlags: 11
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da692e001514ec24dbc4cca1949ff7e8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  version: 13
+  hdPluginSubTargetMaterialVersions:
+    m_Keys: []
+    m_Values: 
 --- !u!21 &2100000
 Material:
   serializedVersion: 8
@@ -7,11 +23,12 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Pool Water Shader
-  m_Shader: {fileID: -6465566751694194690, guid: a16e937878993224a9518c611831f801, type: 3}
+  m_Name: Water2
+  m_Shader: {fileID: -6465566751694194690, guid: bd848093009f094d58017f7b95f2a823, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
+  - _DISABLE_SSR_TRANSPARENT
   - _ENABLE_FOG_ON_TRANSPARENT
   - _SURFACE_TYPE_TRANSPARENT
   m_InvalidKeywords: []
@@ -23,36 +40,17 @@ Material:
     MotionVector: User
     RenderType: Transparent
   disabledShaderPasses:
-  - MOTIONVECTORS
+  - TransparentDepthPrepass
   - TransparentDepthPostpass
   - TransparentBackface
   - RayTracingPrepass
+  - MOTIONVECTORS
   m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
-    - _MotionChoas4Way_59b8c407ab5e48ffbd00eb998bd9e26b_Texture2D_4273110478_Texture2D:
-        m_Texture: {fileID: 2800000, guid: 4039cca7ee4a1394fb321130663f74f1, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _NormalMap_5eddb33439b344ef9404ffe3d734ad4d_NormalMap_3886363543_Texture2D:
-        m_Texture: {fileID: 2800000, guid: 933bed0224430141cb865033793969f9, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _NormalMap_851189b96a154c829857d582ac0ba565_NormalMap_3886363543_Texture2D:
-        m_Texture: {fileID: 2800000, guid: 933bed0224430141cb865033793969f9, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _NormalMap_93af95009b7940b5987e335d5a9b2b74_NormalMap_3886363543_Texture2D:
-        m_Texture: {fileID: 2800000, guid: 933bed0224430141cb865033793969f9, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _RippleDisplacement:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _SampleTexture2D_02e346b2d63144528a73768a30a297d9_Texture_1_Texture2D:
-        m_Texture: {fileID: 2800000, guid: 7c590264437fb5446bc84173a966ebc1, type: 3}
+    - _Normal_Map:
+        m_Texture: {fileID: 2800000, guid: 7d718a8205982522c8f5c1d89c9d868f, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - unity_Lightmaps:
@@ -74,12 +72,9 @@ Material:
     - _AlphaDstBlend: 10
     - _AlphaSrcBlend: 1
     - _BlendMode: 0
-    - _BlurStrength: 3
-    - _ChromaticAberrationStrength: 0
     - _ConservativeDepthOffsetEnable: 0
     - _CullMode: 2
     - _CullModeForward: 2
-    - _Depth: 0
     - _DepthOffsetEnable: 0
     - _DoubleSidedEnable: 0
     - _DoubleSidedGIMode: 0
@@ -89,31 +84,30 @@ Material:
     - _EnableBlendModePreserveSpecularLighting: 1
     - _EnableFogOnTransparent: 1
     - _ExcludeFromTUAndAA: 0
-    - _FullColorDepth: 100
     - _MaterialID: 1
     - _MaterialTypeMask: 2
+    - _Normal_Strength: 0.4
     - _OpaqueCullMode: 2
-    - _PeakSharpness: 0.1
     - _PerPixelSorting: 0
     - _RayTracing: 0
     - _ReceivesSSR: 1
-    - _ReceivesSSRTransparent: 1
+    - _ReceivesSSRTransparent: 0
+    - _Refraction: 0.04
     - _RefractionModel: 0
     - _RenderQueueType: 4
     - _RequireSplitLighting: 0
-    - _RippleHeight: 3
+    - _Smoothness: 0.691
     - _SrcBlend: 1
     - _StencilRef: 0
-    - _StencilRefDepth: 8
+    - _StencilRefDepth: 0
     - _StencilRefDistortionVec: 4
-    - _StencilRefGBuffer: 10
-    - _StencilRefMV: 40
+    - _StencilRefGBuffer: 2
+    - _StencilRefMV: 32
     - _StencilWriteMask: 6
     - _StencilWriteMaskDepth: 9
     - _StencilWriteMaskDistortionVec: 4
     - _StencilWriteMaskGBuffer: 15
     - _StencilWriteMaskMV: 41
-    - _Strength: 0.2
     - _SupportDecals: 1
     - _SurfaceType: 1
     - _TransmissionEnable: 1
@@ -125,35 +119,16 @@ Material:
     - _TransparentWritingMotionVec: 0
     - _TransparentZWrite: 0
     - _UseShadowThreshold: 0
-    - _WaveHeight: 0.1
-    - _WaveLength: 20
     - _ZTestDepthEqualForOpaque: 4
     - _ZTestGBuffer: 4
     - _ZTestTransparent: 4
     - _ZWrite: 0
     m_Colors:
-    - _DeepColor: {r: 0.06274508, g: 0.13725486, b: 0.16862747, a: 0.9372549}
     - _DoubleSidedConstants: {r: 1, g: 1, b: -1, a: 0}
     - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
-    - _ShallowColor: {r: 0.118230365, g: 0.37659055, b: 0.41202706, a: 0.4862745}
-    - _SurfaceSize: {r: 100, g: 100, b: 0, a: 0}
-    - _WaterColor: {r: 0, g: 0, b: 0, a: 1}
-    - _WaveDirection: {r: 1, g: 0, b: 0, a: 0}
+    - _Speed: {r: 0.1, g: 0.1, b: 0, a: 0}
+    - _Speed2: {r: -0.1, g: 0.1, b: 0, a: 0}
+    - _UV1: {r: 4, g: 4, b: 0, a: 0}
+    - _UV2: {r: 5, g: 5, b: 1, a: 0.3}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
---- !u!114 &5178679449724160329
-MonoBehaviour:
-  m_ObjectHideFlags: 11
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: da692e001514ec24dbc4cca1949ff7e8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  version: 13
-  hdPluginSubTargetMaterialVersions:
-    m_Keys: []
-    m_Values: 

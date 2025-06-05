@@ -2362,8 +2362,8 @@
     "m_ObjectId": "0122f89604ec4886a5d5c50e839956f7",
     "m_Title": "Depth",
     "m_Position": {
-        "x": 897.1428833007813,
-        "y": 1163.428466796875
+        "x": 898.0,
+        "y": 1164.0
     }
 }
 
@@ -7795,8 +7795,8 @@
     "m_ObjectId": "657a9066b24b4a9785832fa0d1ead7b3",
     "m_Title": "Water Foam",
     "m_Position": {
-        "x": 1100.5714111328125,
-        "y": -290.857177734375
+        "x": 1101.0,
+        "y": -290.0000915527344
     }
 }
 
@@ -8549,8 +8549,8 @@
     "m_ObjectId": "750f0aadbd0947cb9d43cd07602bdc6e",
     "m_Title": "Surface Ripple UV Optimization",
     "m_Position": {
-        "x": 3960.0,
-        "y": 222.857177734375
+        "x": 3961.0,
+        "y": 222.99993896484376
     }
 }
 
@@ -8967,7 +8967,7 @@
     "m_Hidden": false,
     "m_ShaderOutputName": "X",
     "m_StageCapability": 3,
-    "m_Value": 0.05000000074505806,
+    "m_Value": 0.019999999552965165,
     "m_DefaultValue": 0.0,
     "m_Labels": []
 }
@@ -11965,7 +11965,7 @@
     "m_Hidden": false,
     "m_ShaderOutputName": "X",
     "m_StageCapability": 3,
-    "m_Value": 0.029999999329447748,
+    "m_Value": 0.009999999776482582,
     "m_DefaultValue": 0.0,
     "m_Labels": []
 }
@@ -12183,8 +12183,8 @@
     "m_ObjectId": "be7650fe4c5b4e1abe0ce377726b89c9",
     "m_Title": "Surface Ripples",
     "m_Position": {
-        "x": 613.1428833007813,
-        "y": 327.4285888671875
+        "x": 614.0,
+        "y": 327.9999694824219
     }
 }
 
@@ -12793,8 +12793,8 @@
     "m_ObjectId": "c5d1978d50f841feb7b1ba4399407c04",
     "m_Title": "Gerstner Waves",
     "m_Position": {
-        "x": 1925.1429443359375,
-        "y": -1175.4287109375
+        "x": 1926.0,
+        "y": -1175.0
     }
 }
 
@@ -13141,7 +13141,7 @@
     "m_Hidden": false,
     "m_ShaderOutputName": "X",
     "m_StageCapability": 3,
-    "m_Value": 0.03999999910593033,
+    "m_Value": 0.014999999664723874,
     "m_DefaultValue": 0.0,
     "m_Labels": []
 }
@@ -14292,8 +14292,8 @@
     "m_ObjectId": "e21c9b6c2440417e9f3619b480115e3d",
     "m_Title": "Ripple",
     "m_Position": {
-        "x": 3275.428466796875,
-        "y": 1013.71435546875
+        "x": 3276.0,
+        "y": 1014.0
     }
 }
 
