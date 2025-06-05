@@ -89,7 +89,7 @@ Material:
     - _EnableBlendModePreserveSpecularLighting: 1
     - _EnableFogOnTransparent: 1
     - _ExcludeFromTUAndAA: 0
-    - _FullColorDepth: 100
+    - _FullColorDepth: -30
     - _MaterialID: 1
     - _MaterialTypeMask: 2
     - _OpaqueCullMode: 2
@@ -125,7 +125,7 @@ Material:
     - _TransparentWritingMotionVec: 0
     - _TransparentZWrite: 0
     - _UseShadowThreshold: 0
-    - _WaveHeight: 0.1
+    - _WaveHeight: 0.04
     - _WaveLength: 20
     - _ZTestDepthEqualForOpaque: 4
     - _ZTestGBuffer: 4
