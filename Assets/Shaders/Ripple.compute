@@ -1,0 +1,29 @@
+#pragma kernel Ripple
+
+RWTexture2D<float> Result;
+Texture2D<float> Current;
+Texture2D<float> Previous;
+
+float3 dropPos;
+float dispersion;
+
+[numthreads(32, 32, 1)]
+void Ripple (uint3 id : SV_DispatchThreadID) {
+    int2 coord = int2(id.xy);
+
+    float center = Current[coord];
+    float left = Current[coord + int2(-1, 0)];
+    float right = Current[coord + int2(1, 0)];
+    float up = Current[coord + int2(0, -1)];
+    float down = Current[coord + int2(0, 1)];
+    float prev = Previous[coord];
+
+    float laplacian = left + right + up + down - 4.0 * center;
+    float next = dispersion * (2.0 * center - prev + 0.25 * laplacian);
+
+    if (id.x == dropPos.x && id.y == dropPos.y) {
+        next = dropPos.z;
+    }
+    Result[coord] = next;
+}
+

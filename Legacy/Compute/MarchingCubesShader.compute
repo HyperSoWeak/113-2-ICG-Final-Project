@@ -1,0 +1,77 @@
+// Each #kernel tells which function to compile; you can have many kernels
+#pragma kernel ProcessMarchingCube
+#include "MarchTables.compute"
+
+struct Triangle {
+    float3 v0;
+    float3 v1;
+    float3 v2;
+};
+
+float Threshold;
+RWTexture3D<float> NoiseMap;
+AppendStructuredBuffer<Triangle> VertexBuffer;
+
+static const uint3 corners[8] = {
+    uint3(0, 0, 0),
+    uint3(1, 0, 0),
+    uint3(1, 0, 1),
+    uint3(0, 0, 1),
+    uint3(0, 1, 0),
+    uint3(1, 1, 0),
+    uint3(1, 1, 1),
+    uint3(0, 1, 1)
+};
+
+static const int edges[12][2] = {
+    {0, 1},
+    {1, 2},
+    {2, 3},
+    {3, 0},
+    {4, 5},
+    {5, 6},
+    {6, 7},
+    {7, 4},
+    {0, 4},
+    {1, 5},
+    {2, 6},
+    {3, 7}
+};
+
+[numthreads(8,8,8)]
+void ProcessMarchingCube (uint3 id : SV_DispatchThreadID) {
+    uint cubeIndex = 0;
+    [unroll]
+    for (int i = 0; i < 8; i++) {
+        int3 position = corners[i] + id;
+        float value = NoiseMap[position];
+        if (value < Threshold) {
+            cubeIndex |= (1 << i);
+        }
+    }
+
+    int edgeIndices[16] = triangulation[cubeIndex];
+
+    for (int t = 0; t < 5; t++) {
+        if (edgeIndices[t*3] == -1) break;
+        float3 vertices[3];
+        for (int v = 0; v < 3; v++) {
+            int edgeIndex = edgeIndices[t*3 + v];
+            int edgeCorners[2] = edges[edgeIndex];
+            uint3 edgeStart = corners[edgeCorners[0]] + id;
+            uint3 edgeEnd = corners[edgeCorners[1]] + id;
+            // float3 vertex = lerp(edgeStart, edgeEnd, 0.5f);
+            float valueStart = NoiseMap[edgeStart] - Threshold;
+            float valueEnd = NoiseMap[edgeEnd] - Threshold;
+            float ratio = valueStart / (valueStart - valueEnd);
+            float3 vertex = lerp(edgeStart, edgeEnd, ratio);
+            vertices[v] = vertex;
+        }
+        Triangle tri;
+        tri.v0 = vertices[0];
+        tri.v1 = vertices[1];
+        tri.v2 = vertices[2];
+        VertexBuffer.Append(tri);
+    }
+}
+
